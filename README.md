@@ -1,61 +1,33 @@
-# AWS EC2 Ubuntu 24: Direct Root SSH Configuration Guide
+# AWS EC2 Ubuntu 24.04 – Direct Root SSH Login
 
-A step-by-step documentation on setting up an Ubuntu EC2 instance on AWS and enabling direct SSH login for the `root` user with password authentication.
+## Overview
 
----
+This project demonstrates how to configure an AWS EC2 instance running Ubuntu 24.04 to allow direct SSH login as the `root` user using password authentication through MobaXterm.
 
-## 1. Launch & Identify Instance
-* Launch an Ubuntu 24.04 instance on AWS EC2.
-* Note down the instance's **Public IPv4 address** and ensure SSH (Port 22) is open in the attached Security Group.
+## Objectives
 
-![EC2 Instance](images/01-ec2-instance.png)
+* Launch an Ubuntu 24.04 EC2 instance on AWS.
+* Establish an SSH connection using MobaXterm and the default `ubuntu` user.
+* Set a password for the root account.
+* Configure SSH settings to enable root login and password authentication.
+* Validate the SSH configuration and restart the SSH service.
+* Connect directly to the instance using the `root` username.
 
----
+## Technologies Used
 
-## 2. Initial SSH Connection via MobaXterm
-* Open MobaXterm and create a new SSH session.
-* Use default username `ubuntu` and attach your downloaded `.pem` key under **Advanced SSH settings**.
-* Successfully access the terminal.
+* **AWS EC2** – Virtual server hosting.
+* **Ubuntu 24.04** – Operating system.
+* **MobaXterm** – Remote SSH access.
+* **OpenSSH** – Secure remote connection service.
 
-![MobaXterm Initial SSH](images/02-initial-ssh.png)
+## Configuration Summary
 
----
+The SSH daemon configuration is modified to permit root login and password-based authentication. After validating and restarting the SSH service, a new MobaXterm session is configured to connect using the root account.
 
-## 3. Set Root Password
-Switch to root and set a strong password:
-bash
-sudo su
-passwd root
-![Set Root Password](images/03-root-password.png)
+## Security Note
 
----
+Direct root login and password-based SSH authentication increase security risks, particularly on internet-accessible servers. For production environments, it is recommended to use SSH key authentication, disable direct root login, and perform administrative tasks using `sudo`.
 
-## 4. Modify SSH Daemon Configuration
-Edit the SSH server configuration file:
-Update or add the following directives:
-[200~text
-PermitRootLogin yes
-PubkeyAuthentication no
-PasswordAuthentication yes
-KbdInteractiveAuthentication yes~
-![SSHD Configuration 1](images/04-sshd-config-1.png)
-![SSHD Configuration 2](images/05-sshd-config-2.png)
+## Outcome
 
----
-
-## 5. Validate & Restart SSH Service
-Check the syntax and reload the SSH daemon:
-[200~
-bash
-sshd -t
-systemctl restart ssh
-![Restart SSH](images/06-restart-ssh.png)
-
----
-
-## 6. Connect Directly as Root
-* Create a new session in MobaXterm with Remote Host set to your Public IP and username set to `root`.
-* Authenticate using the password configured in Step 3.
-
-![Connect Root](images/07-connect-root.png)
-![Root Password Prompt](images/08-root-prompt.png)
+Successfully configuring direct root SSH access to an Ubuntu 24.04 EC2 instance using MobaXterm for learning and testing purposes.
